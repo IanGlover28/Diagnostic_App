@@ -32,7 +32,7 @@ const NewTestPage = () => {
   return (
     <div>
       <h1 className="text-xl font-bold">Add New Test</h1>
-      <TestForm onSubmit={handleFormSubmit} />
+      <TestForm  buttonText="Submit" onSubmit={handleFormSubmit} />
     </div>
   );
 };

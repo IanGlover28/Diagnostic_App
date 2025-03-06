@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 
 interface TestFormProps {
   test?: { id: number; patientName: string; testType: string; result: string; testDate: string; notes?: string };
+  initialData?: { patientName: string; testType: string; result: string; testDate: string; notes?: string };
   onSubmit: (data: { patientName: string; testType: string; result: string; testDate: string; notes?: string }) => void;
+  buttonText: string;
 }
 
-const TestForm: React.FC<TestFormProps> = ({ test, onSubmit }) => {
-  const [patientName, setPatientName] = useState<string>(test?.patientName || '');
-  const [testType, setTestType] = useState<string>(test?.testType || '');
-  const [result, setResult] = useState<string>(test?.result || '');
-  const [testDate, setTestDate] = useState<string>(test?.testDate || '');
-  const [notes, setNotes] = useState<string>(test?.notes || '');
+const TestForm: React.FC<TestFormProps> = ({ test, initialData, onSubmit }) => {
+  const [patientName, setPatientName] = useState<string>(initialData?.patientName || test?.patientName || '');
+  const [testType, setTestType] = useState<string>(initialData?.testType || test?.testType || '');
+  const [result, setResult] = useState<string>(initialData?.result || test?.result || '');
+  const [testDate, setTestDate] = useState<string>(initialData?.testDate || test?.testDate || '');
+  const [notes, setNotes] = useState<string>(initialData?.notes || test?.notes || '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +29,16 @@ const TestForm: React.FC<TestFormProps> = ({ test, onSubmit }) => {
       setNotes(test.notes || '');
     }
   }, [test]);
+
+  useEffect(() => {
+    if (initialData) {
+      setPatientName(initialData.patientName);
+      setTestType(initialData.testType);
+      setResult(initialData.result);
+      setTestDate(initialData.testDate);
+      setNotes(initialData.notes || '');
+    }
+  }, [initialData]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto p-4 bg-white shadow-md rounded">

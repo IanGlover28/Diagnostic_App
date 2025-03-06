@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 interface TestListProps {
   tests: { id: string; patientName: string; testType: string; result: string; testDate: string; notes?: string }[];
-  onDelete: (id: string) => void; // Ensure that the ID is treated as a string
+  onDelete: (id: string) => void; 
 }
 
 const TestList: React.FC<TestListProps> = ({ tests, onDelete }) => {
