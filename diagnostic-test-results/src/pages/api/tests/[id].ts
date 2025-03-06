@@ -1,4 +1,3 @@
-// pages/api/tests/index.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
@@ -20,7 +19,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === 'POST') {
+  const { method } = req;
+  
+  if (method === 'POST') {
     try {
       // Validate request body
       const validatedData = TestCreateSchema.parse(req.body);
@@ -28,7 +29,7 @@ export default async function handler(
       // Convert string date to Date object
       const testDate = new Date(validatedData.testDate);
       
-      // Create new test result in database
+      // Create new test result in the database
       const testResult = await prisma.diagnosticTest.create({
         data: {
           patientName: validatedData.patientName,
@@ -46,7 +47,7 @@ export default async function handler(
       }
       return res.status(500).json({ error: 'Failed to create test result' });
     }
-  } else if (req.method === 'GET') {
+  } else if (method === 'GET') {
     try {
       // Get all test results
       const testResults = await prisma.diagnosticTest.findMany({
@@ -58,6 +59,24 @@ export default async function handler(
       return res.status(200).json(testResults);
     } catch (error) {
       return res.status(500).json({ error: 'Failed to fetch test results' });
+    }
+  } else if (method === 'DELETE') {
+    try {
+      // Get test ID from URL query parameters
+      const { id } = req.query;
+
+      if (!id || typeof id !== 'string') {
+        return res.status(400).json({ error: 'Test ID is required' });
+      }
+
+      // Delete the test result from the database
+      const deletedTest = await prisma.diagnosticTest.delete({
+        where: { id },
+      });
+
+      return res.status(200).json(deletedTest);
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to delete test result' });
     }
   } else {
     return res.status(405).json({ error: 'Method not allowed' });

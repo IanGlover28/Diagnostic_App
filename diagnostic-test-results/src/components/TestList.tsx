@@ -4,8 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 
 interface TestListProps {
-  tests: { id: number; patientName: string; testType: string; result: string; testDate: string; notes?: string }[];
-  onDelete: (id: number) => void;
+  tests: { id: string; patientName: string; testType: string; result: string; testDate: string; notes?: string }[];
+  onDelete: (id: string) => void; // Ensure that the ID is treated as a string
 }
 
 const TestList: React.FC<TestListProps> = ({ tests, onDelete }) => {
@@ -30,12 +30,12 @@ const TestList: React.FC<TestListProps> = ({ tests, onDelete }) => {
               <td className="px-4 py-2 border">{test.result}</td>
               <td className="px-4 py-2 border">{test.testDate}</td>
               <td className="px-4 py-2 border space-x-2">
-              <Link href={`/tests/edit/${test.id}`} className="text-indigo-600 hover:text-indigo-900">
-                Edit
-              </Link>
+              <Link href={`/tests/edit/${test.id}`}>
+  <button>Edit</button>
+</Link>
 
                 <button
-                  onClick={() => onDelete(test.id)}
+                  onClick={() => onDelete(test.id)} // Call the onDelete function with the test id
                   className="text-red-600 hover:text-red-900"
                 >
                   Delete

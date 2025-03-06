@@ -1,126 +1,40 @@
-// components/TestForm.tsx
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import TestForm from '../components/TestForm';
 
-type TestFormData = {
-  patientName: string;
-  testType: string;
-  result: string;
-  testDate: string;
-  notes?: string;
-};
+const NewTestPage = () => {
+  const router = useRouter();
 
-interface TestFormProps {
-  onSubmit: (data: TestFormData) => void;
-  buttonText: string;
-}
+  const handleFormSubmit = async (data: { patientName: string; testType: string; result: string; testDate: string; notes?: string }) => {
+    try {
+      const response = await fetch('/api/tests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-const TestForm: React.FC<TestFormProps> = ({ onSubmit, buttonText }) => {
-  const [formData, setFormData] = useState<TestFormData>({
-    patientName: '',
-    testType: '',
-    result: '',
-    testDate: '',
-    notes: '',
-  });
+      if (!response.ok) {
+        throw new Error('Failed to add test result');
+      }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+      const result = await response.json();
+      console.log('Test added successfully:', result);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
+      alert('Test result added successfully!');
+
+      // Redirect to test list page after submission
+      router.push('/'); 
+    } catch (error) {
+      console.error('Error submitting test:', error);
+      alert('Error submitting test');
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label htmlFor="patientName" className="block text-sm font-medium text-gray-700">
-          Patient Name
-        </label>
-        <input
-          id="patientName"
-          name="patientName"
-          type="text"
-          value={formData.patientName}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="testType" className="block text-sm font-medium text-gray-700">
-          Test Type
-        </label>
-        <input
-          id="testType"
-          name="testType"
-          type="text"
-          value={formData.testType}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="result" className="block text-sm font-medium text-gray-700">
-          Result
-        </label>
-        <input
-          id="result"
-          name="result"
-          type="text"
-          value={formData.result}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="testDate" className="block text-sm font-medium text-gray-700">
-          Test Date
-        </label>
-        <input
-          id="testDate"
-          name="testDate"
-          type="date"
-          value={formData.testDate}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
-          Notes (Optional)
-        </label>
-        <textarea
-          id="notes"
-          name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
-      </div>
-
-      <div>
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          {buttonText}
-        </button>
-      </div>
-    </form>
+    <div>
+      <h1 className="text-xl font-bold">Add New Test</h1>
+      <TestForm onSubmit={handleFormSubmit} />
+    </div>
   );
 };
 
-export default TestForm;
+export default NewTestPage;

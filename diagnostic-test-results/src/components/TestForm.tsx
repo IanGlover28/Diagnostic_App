@@ -1,24 +1,23 @@
-// src/components/TestForm.tsx
-
 import React, { useState, useEffect } from 'react';
 
 interface TestFormProps {
   test?: { id: number; patientName: string; testType: string; result: string; testDate: string; notes?: string };
-  onSubmit: (data: any) => void;
+  onSubmit: (data: { patientName: string; testType: string; result: string; testDate: string; notes?: string }) => void;
 }
 
 const TestForm: React.FC<TestFormProps> = ({ test, onSubmit }) => {
-  const [patientName, setPatientName] = useState(test?.patientName || '');
-  const [testType, setTestType] = useState(test?.testType || '');
-  const [result, setResult] = useState(test?.result || '');
-  const [testDate, setTestDate] = useState(test?.testDate || '');
-  const [notes, setNotes] = useState(test?.notes || '');
+  const [patientName, setPatientName] = useState<string>(test?.patientName || '');
+  const [testType, setTestType] = useState<string>(test?.testType || '');
+  const [result, setResult] = useState<string>(test?.result || '');
+  const [testDate, setTestDate] = useState<string>(test?.testDate || '');
+  const [notes, setNotes] = useState<string>(test?.notes || '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({ patientName, testType, result, testDate, notes });
   };
 
+  // Automatically set the form state based on the test prop when it changes
   useEffect(() => {
     if (test) {
       setPatientName(test.patientName);
