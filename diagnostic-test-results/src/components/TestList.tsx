@@ -67,9 +67,10 @@ const TestList: React.FC<TestListProps> = ({ tests, onDelete }) => {
                   </td>
                   <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                     <div className="flex justify-end space-x-2">
-                      <Link href={`/tests/edit/${test.id}`}>
-                        <a className="text-indigo-600 hover:text-indigo-900">Edit</a>
-                      </Link>
+                    <Link href={`/tests/edit/${test.id}`} className="text-indigo-600 hover:text-indigo-900">
+                      Edit
+                    </Link>
+
                       <button
                         type="button"
                         onClick={() => onDelete(test.id)}
