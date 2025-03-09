@@ -8,11 +8,11 @@ async function testConnection() {
     await prisma.$connect()
     console.log('✅ Database connection successful!')
     
-    // Optional: Test a simple query
+    // Test a simple query and log the result
     const testQuery = await prisma.diagnosticTest.findMany({
       take: 1
     })
-    console.log('Test query executed successfully')
+    console.log('Test query executed successfully:', testQuery) // Use the query result
   } catch (error) {
     console.error('❌ Database connection failed:', error)
   } finally {

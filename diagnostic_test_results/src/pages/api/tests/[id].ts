@@ -45,6 +45,10 @@ export default async function handler(
       if (error instanceof z.ZodError) {
         return res.status(400).json({ errors: error.errors });
       }
+
+      // Log any unexpected error
+      console.error('Unexpected error:', error);
+      
       return res.status(500).json({ error: 'Failed to create test result' });
     }
   } else if (method === 'GET') {
@@ -58,6 +62,8 @@ export default async function handler(
       
       return res.status(200).json(testResults);
     } catch (error) {
+      // Log error for debugging
+      console.error('Failed to fetch test results:', error);
       return res.status(500).json({ error: 'Failed to fetch test results' });
     }
   } else if (method === 'DELETE') {
@@ -76,6 +82,8 @@ export default async function handler(
 
       return res.status(200).json(deletedTest);
     } catch (error) {
+      // Log error for debugging
+      console.error('Failed to delete test result:', error);
       return res.status(500).json({ error: 'Failed to delete test result' });
     }
   } else {

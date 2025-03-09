@@ -1,4 +1,3 @@
-// pages/tests/edit/[id].tsx
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -47,7 +46,8 @@ export default function EditTest() {
           ...data,
           testDate: formattedDate,
         });
-      } catch (err: any) {
+      } catch (err: unknown) {
+        // Narrow the type to 'Error' if it's an instance of Error
         const errorMessage = err instanceof Error ? err.message : 'Failed to load test result. Please try again later.';
         setError(errorMessage);
         console.error(err);
@@ -77,7 +77,8 @@ export default function EditTest() {
       
       // Redirect to homepage on success
       router.push('/');
-    } catch (err: any) {
+    } catch (err: unknown) {
+      // Narrow the type to 'Error' if it's an instance of Error
       const errorMessage = err instanceof Error ? err.message : 'An error occurred while updating the test result';
       setError(errorMessage);
       console.error(err);

@@ -3,9 +3,6 @@ import Head from "next/head";
 import Link from "next/link";
 import TestList from "../components/TestList";
 
-
-
-
 type DiagnosticTest = {
   id: string;
   patientName: string;
@@ -33,7 +30,7 @@ export default function Home() {
       const data = await response.json();
       setTests(data);
       setError(null);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage =
         err instanceof Error
           ? err.message
@@ -62,7 +59,7 @@ export default function Home() {
 
       // Remove deleted test from state
       setTests((prev) => prev.filter((test) => test.id !== id));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       alert("Failed to delete test result. Please try again.");
     }
