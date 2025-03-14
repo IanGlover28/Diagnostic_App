@@ -5,6 +5,7 @@ import TestList from "../components/TestList";
 
 
 
+
 type DiagnosticTest = {
   id: string;
   patientName: string;
@@ -109,3 +110,8 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+
+

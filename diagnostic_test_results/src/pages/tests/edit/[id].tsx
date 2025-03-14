@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { format, parseISO } from "date-fns";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import TestForm from '../../../../components/TestForm';
+import TestForm from '../../../components/TestForm';
 
 type TestFormData = {
   patientName: string;
@@ -40,7 +41,7 @@ export default function EditTest() {
         const data = await response.json();
         
         // Format date for the form
-        const formattedDate = new Date(data.testDate).toISOString().split('T')[0];
+        const formattedDate = data.testDate ? new Date(data.testDate).toISOString().split('T')[0] : "";
         
         setTest({
           ...data,
@@ -97,11 +98,9 @@ export default function EditTest() {
       </Head>
       
       <div className="mb-6">
-        <Link href="/">
-          <a className="text-indigo-600 hover:text-indigo-800">
-            &larr; Back to all tests
-          </a>
-        </Link>
+      <Link href="/" className="text-indigo-600 hover:text-indigo-800">
+  &larr; Back to all tests
+</Link>
       </div>
       
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Test Result</h1>

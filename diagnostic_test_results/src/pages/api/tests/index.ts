@@ -3,7 +3,24 @@ import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
 
 // Initialize Prisma Client
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL,
+    },
+  },
+}).$extends({
+  query: {
+    async $allOperations({ operation, model, args, query }) {
+      try {
+        return await query(args);
+      } catch (error) {
+        console.error(`Error in ${operation} on ${model}:`, error);
+        throw error;
+      }
+    },
+  },
+});
 
 // Validation schema using Zod
 const testResultSchema = z.object({
