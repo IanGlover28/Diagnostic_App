@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import TestForm from '../../../components/TestForm';
+import TestForm from '@/components/TestForm';
 
 type TestFormData = {
   patientName: string;
@@ -22,6 +22,7 @@ export default function EditTest() {
   const [error, setError] = useState<string | null>(null);
   
   // Fetch test data
+  
   useEffect(() => {
     if (!id) return;
     
