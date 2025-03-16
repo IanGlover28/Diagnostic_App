@@ -5,7 +5,8 @@
   "scripts": {
     "devStart": "ts-node server.ts",
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint",
     "db:test": "tsx ./scripts/db-test.ts"
